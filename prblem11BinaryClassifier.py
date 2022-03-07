@@ -8,19 +8,17 @@ from tensorflow.keras.utils import to_categorical
 def prepare_data():
     # load image data
     (trainX, trainY), (testX, testY) = mnist.load_data()
+    #print(trainX.shape, trainY.shape, testX.shape, testY.shape)
     print(trainX.shape, trainY.shape, testX.shape, testY.shape)
-    # print(trainX.shape, trainY.shape, testX.shape, testY.shape)
-    index = np.argwhere(trainY < 2)
-    trainX = trainX[index]
-    trainY = trainY[index]
-    trainX = trainX[:, 0, :, :]
-    trainY = trainY[:, 0]
+    train_indices = np.argwhere(trainY < 2)
+    test_indices = np.argwhere(testY < 2)
+    train_indices = np.squeeze(train_indices)
+    test_indices = np.squeeze(test_indices)
 
-    index = np.argwhere(testY < 2)
-    testX = testX[index]
-    testY = testY[index]
-    testX = testX[:, 0, :, :]
-    testY = testY[:, 0]
+    trainX = trainX[train_indices]
+    trainY = trainY[train_indices]
+    testX = testX[test_indices]
+    testY = testY[test_indices]
 
     classN = 2
     trainY = to_categorical(trainY, classN)
